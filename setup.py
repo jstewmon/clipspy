@@ -29,9 +29,12 @@
 
 import os
 import fileinput
+import subprocess
+
+import setuptools.command.build_py
 from setuptools import find_packages, setup
 
-
+CLIPS_SOURCE_URL = "https://sourceforge.net/projects/clipsrules/files/CLIPS/6.40/clips_core_source_640.zip"
 CWD = os.path.dirname(__file__)
 
 
@@ -40,6 +43,15 @@ def package_version():
     for line in fileinput.input(module_path):
         if line.startswith('__version__'):
             return line.split('=')[-1].strip().replace('\'', '')
+
+
+class BuildPyCommand(setuptools.command.build_py.build_py):
+    """Custom build command."""
+
+    def run(self):
+        subprocess.run(["wget", "-O" "clips.zip", CLIPS_SOURCE_URL], check=True)
+        subprocess.run(["unzip", "-jo", "clips.zip", "-d", "clips_source"], check=True)
+        setuptools.command.build_py.build_py.run(self)
 
 
 setup(
@@ -51,6 +63,9 @@ setup(
     license="BSD",
     long_description=open(os.path.join(CWD, 'README.rst')).read(),
     packages=find_packages(),
+    cmdclass={
+        "build_py": BuildPyCommand,
+    },
     ext_package="clips",
     setup_requires=["cffi>=1.0.0"],
     install_requires=["cffi>=1.0.0"],

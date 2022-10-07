@@ -1,1 +1,1 @@
-include version.py LICENSE.txt
+include version.py LICENSE.txt clips_source/*.h

@@ -27,7 +27,8 @@
 # OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
+import sysconfig
+from pathlib import Path
 from cffi import FFI
 
 
@@ -58,9 +59,16 @@ with open("lib/clips.cdef") as cdef_file:
     CLIPS_CDEF = cdef_file.read()
 
 
+extra_compile_args = sysconfig.get_config_var("CFLAGS").split()
+extra_compile_args.extend(["-O3", "-fno-strict-aliasing"])
+
 ffibuilder.set_source("_clips",
                       CLIPS_SOURCE,
-                      libraries=["clips"])
+                      sources=[str(p) for p in Path("clips_source").glob("*.c")],
+                      include_dirs=["clips_source"],
+                      extra_compile_args=extra_compile_args,
+                    #   libraries=["clips"],
+                      )
 
 
 ffibuilder.cdef(CLIPS_CDEF)
