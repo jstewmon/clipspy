@@ -15,3 +15,6 @@ build-backend = "setuptools.build_meta"
 [tool.cibuildwheel]
 test-requires = "pytest"
 test-command = "pytest {project}/test"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y libffi-devel unzip"

@@ -30,7 +30,8 @@
 import os
 import fileinput
 import shutil
-import zipfile
+import subprocess
+from pathlib import Path
 
 import requests
 import setuptools.command.build_py
@@ -51,11 +52,12 @@ class BuildPyCommand(setuptools.command.build_py.build_py):
     """Custom build command."""
 
     def run(self):
+        archive = Path("clips.zip")
+        dest = Path("clips_source")
         with requests.get(CLIPS_SOURCE_URL, stream=True) as res:
-            with open("clips.zip", "wb") as f:
+            with archive.open("wb") as f:
                 shutil.copyfileobj(res.raw, f)
-        with zipfile.ZipFile("clips.zip", "r") as zf:
-            zf.extractall("clips_source")
+        subprocess.run(["unzip", "-jo", str(archive), "-d", str(dest)], check=True)
         setuptools.command.build_py.build_py.run(self)
 
 
