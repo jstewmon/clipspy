@@ -1,0 +1,17 @@
+[project]
+requires-python = ">=3.6"
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "Cython",
+    "cffi>=1.0.0",
+    "requests",
+]
+
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "pytest {project}/test"
