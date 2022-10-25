@@ -35,16 +35,9 @@ from setuptools import find_packages, setup
 CWD = os.path.dirname(__file__)
 
 
-def package_version():
-    module_path = os.path.join(CWD, 'clips', '__init__.py')
-    for line in fileinput.input(module_path):
-        if line.startswith('__version__'):
-            return line.split('=')[-1].strip().replace('\'', '')
-
 
 setup(
     name="clipspy",
-    version=package_version(),
     author="Matteo Cafasso",
     author_email="noxdafox@gmail.com",
     description=("CLIPS Python bindings"),
@@ -52,7 +45,6 @@ setup(
     long_description=open(os.path.join(CWD, 'README.rst')).read(),
     packages=find_packages(),
     ext_package="clips",
-    setup_requires=["cffi>=1.0.0"],
     install_requires=["cffi>=1.0.0"],
     cffi_modules=["clips/clips_build.py:ffibuilder"],
     include_dirs=["/usr/include/clips", "/usr/local/include/clips"],
