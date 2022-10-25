@@ -35,8 +35,10 @@ jobs:
         uses: pypa/cibuildwheel@v2.10.2
         env:
           CIBW_ARCHS_LINUX: x86_64 aarch64
-          CIBW_ARCHS_MACOS: x86_64 arm64
+          # CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_MACOS: universal2
           CIBW_BUILD: ${{ matrix.py }}-${{ matrix.platform.name }}_*
+          CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
       - uses: actions/upload-artifact@v3
         with:
