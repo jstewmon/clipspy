@@ -1,4 +1,6 @@
 [project]
+name = "clipspy"
+version = "0.1.0"
 requires-python = ">=3.6"
 
 [build-system]
@@ -16,4 +18,12 @@ test-requires = "pytest"
 test-command = "pytest {project}/test"
 
 [tool.cibuildwheel.linux]
-before-all = "yum install -y libffi-devel unzip"
+before-all = [
+    "yum install -y libffi-devel unzip",
+    "make install-clips",
+]
+
+[tool.cibuildwheel.macos]
+before-all = [
+    "make install-clips",
+]
