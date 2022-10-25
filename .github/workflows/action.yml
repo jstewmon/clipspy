@@ -16,7 +16,6 @@ jobs:
         - {os: ubuntu-latest, name: musllinux}
         - {os: macos-latest, name: macosx}
         py:
-        - cp36
         - cp37
         - cp38
         - cp39
