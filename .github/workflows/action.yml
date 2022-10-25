@@ -36,6 +36,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_BUILD: ${{ matrix.py }}-${{ matrix.platform.name }}_*
 
       - uses: actions/upload-artifact@v3
         with:

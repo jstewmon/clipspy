@@ -23,6 +23,13 @@ before-all = [
     "make install-clips",
 ]
 
+[[tool.cibuildwheel.overrides]]
+select = "*-musllinux*"
+before-all = [
+    "apk add libffi-dev make unzip wget",
+    "make install-clips",
+]
+
 [tool.cibuildwheel.macos]
 before-all = [
     "make install-clips",
