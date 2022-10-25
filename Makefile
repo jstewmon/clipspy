@@ -17,18 +17,13 @@ clips_source:
 	unzip -jo clips.zip -d clips_source
 
 ifeq ($(PLATFORM),Darwin) # macOS
-clips: CFLAGS = -std=c99 -O3 -fno-strict-aliasing -fPIC
 clips: clips_source
-	# build x86_64 library
 	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source clean
-	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source CFLAGS="-arch x86_64 $(CFLAGS)" LDFLAGS="-arch x86_64" libclips.a
-	$(CC) -arch x86_64 -shared -o clips_source/libclips_x86_64.dylib -Wl,-all_load clips_source/libclips.a -lm
-	# build arm64 library
-	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source clean
-	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source CFLAGS="-arch arm64 $(CFLAGS)" LDFLAGS="-arch arm64" libclips.a
-	$(CC) -arch arm64 -shared -o clips_source/libclips_arm64.so -Wl,-all_load clips_source/libclips.a -lm
-	# combine into universal library
-	lipo -create -output clips_source/libclips.so clips_source/libclips*.so
+	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source \
+		CFLAGS="-std=c99 -O3 -fno-strict-aliasing -fPIC -arch x86_64 -arch arm64" \
+		LDFLAGS="-arch x86_64 -arch arm64"\
+		libclips.a
+	$(CC) -o clips_source/libclips.so -arch x86_64 -arch arm64 -shared -lm clips_source/*.o
 else
 clips: clips_source
 	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source                            \
