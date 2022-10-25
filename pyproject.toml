@@ -19,7 +19,7 @@ test-command = "pytest {project}/test"
 
 [tool.cibuildwheel.linux]
 before-all = [
-    "yum install -y libffi-devel unzip",
+    "yum install -y libffi-devel make unzip wget",
     "make install-clips",
 ]
 
