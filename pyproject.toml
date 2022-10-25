@@ -1,0 +1,19 @@
+[project]
+requires-python = ">=3.6"
+
+[build-system]
+requires = [
+    "setuptools>=42",
+    "wheel",
+    "Cython",
+    "cffi>=1.0.0",
+]
+
+build-backend = "setuptools.build_meta"
+
+[tool.cibuildwheel]
+test-requires = "pytest"
+test-command = "pytest {project}/test"
+
+[tool.cibuildwheel.linux]
+before-all = "yum install -y libffi-devel unzip"
