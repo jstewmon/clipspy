@@ -6,21 +6,21 @@ jobs:
   build_wheels:
     name: >
       Build Wheel
-      (${{ matrix.platform.os }}, ${{ matrix.platform.name }}, ${{ matrix.py }})
+      (${{ matrix.platform.os }}, ${{ matrix.platform.name }}, ${{ matrix.platform.arch }})
     runs-on: ${{ matrix.platform.os }}
     strategy:
       fail-fast: false
       matrix:
         platform:
-        - {os: ubuntu-latest, name: manylinux}
-        - {os: ubuntu-latest, name: musllinux}
-        - {os: macos-latest, name: macosx}
-        py:
-        - cp37
-        - cp38
-        - cp39
-        - cp310
-        - cp311
+        - os: ubuntu-latest
+          name: manylinux
+          arch: aarch64
+        - os: ubuntu-latest
+          name: manylinux
+          arch: x86_64
+        - os: macos-latest
+          name: macosx
+          arch: universal2
 
     steps:
       - uses: actions/checkout@v3
@@ -37,33 +37,9 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           # CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_ARCHS_MACOS: universal2
-          CIBW_BUILD: ${{ matrix.py }}-${{ matrix.platform.name }}_*
+          CIBW_BUILD: 'cp*-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
-# name: CLIPSPy build job
-# on: [push, pull_request]
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-#     strategy:
-#       matrix:
-#         python-version: [3.6, 3.7, 3.8, 3.9]
-#     steps:
-#       - uses: actions/checkout@v2
-#       - name: Set up Python ${{ matrix.python-version }}
-#         uses: actions/setup-python@v2
-#         with:
-#           python-version: ${{ matrix.python-version }}
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install --upgrade cffi pytest
-#       - name: Build CLIPSPy
-#         run: |
-#           make
-#       - name: Run tests
-#         run: |
-#           make test
