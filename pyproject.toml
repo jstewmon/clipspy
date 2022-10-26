@@ -1,7 +1,7 @@
 [project]
 name = "clipspy"
 authors = [{ name = "Matteo Cafasso", email = "noxdafox@gmail.com" }]
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 description = "CLIPS Python bindings"
 readme = "README.rst"
 license = { file = "LICENSE.txt" }

@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.6", "3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v4
@@ -68,6 +68,7 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
           CIBW_BUILD: 'cp*-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
+          CIBW_SKIP: 'cp36-*'
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
       - uses: actions/upload-artifact@v3
