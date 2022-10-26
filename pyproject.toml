@@ -36,8 +36,8 @@ test-command = "pytest {project}/test"
 before-all = [
     "yum install -y libffi-devel make unzip wget",
     """\
-    ([[ -d /host/${GITHUB_WORKSPACE}/clips_source ]] && cp -R /host/${GITHUB_WORKSPACE}/clips_source clips_source) \
-    || (make clips && cp -R clips_source /host/clips_source)\
+    ([[ -d ${CLIPS_SOURCE_DIR} ]] && cp -R ${CLIPS_SOURCE_DIR} clips_source) \
+    || (make clips && cp -R clips_source ${CLIPS_SOURCE_DIR})\
     """,
     "make -o clips install-clips",
 ]

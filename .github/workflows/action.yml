@@ -75,7 +75,8 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.10.2
         env:
-          CIBW_ENVIRONMENT_PASS_LINUX: GITHUB_WORKSPACE
+          CLIPS_SOURCE_DIR: '/host/${{ github.workspace }}/clips_source'
+          CIBW_ENVIRONMENT_PASS_LINUX: CLIPS_SOURCE_DIR
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
           CIBW_BUILD: '${{ matrix.py }}-${{ matrix.name }}_${{ matrix.arch }}'
