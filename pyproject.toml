@@ -1,6 +1,7 @@
 [project]
 name = "clipspy"
 requires-python = ">=3.6"
+dynamic = ["version"]
 
 [build-system]
 requires = [
@@ -11,6 +12,9 @@ requires = [
 ]
 
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+version = {attr = "clips.__version__"}
 
 [tool.cibuildwheel]
 test-requires = "pytest"
