@@ -35,23 +35,16 @@ jobs:
   build_wheels:
     needs: validate
     # if: ${{ github.ref == 'refs/heads/master' }}
-    name: >
-      Build Wheel
-      (${{ matrix.platform.os }}, ${{ matrix.platform.name }}, ${{ matrix.platform.arch }})
+    name: Build Wheel
     runs-on: ${{ matrix.platform.os }}
     strategy:
       fail-fast: false
       matrix:
         platform:
-        - os: ubuntu-latest
-          name: manylinux
-          arch: aarch64
-        - os: ubuntu-latest
-          name: manylinux
-          arch: x86_64
-        - os: macos-latest
-          name: macosx
-          arch: universal2
+        - { os: ubuntu-latest, name: manylinux, arch: x86_64 }
+        - { os: ubuntu-latest, name: manylinux, arch: aarch64 }
+        - { os: macos-latest, name: macosx, arch: universal2 }
+        py: [cp37, cp38, cp39, cp310, cp311]
 
     steps:
       - uses: actions/checkout@v3
@@ -74,7 +67,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
-          CIBW_BUILD: 'cp310-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
+          CIBW_BUILD: '${{ matrix.py }}-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
           CIBW_SKIP: 'cp36-*'
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
