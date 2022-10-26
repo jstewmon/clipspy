@@ -25,7 +25,7 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: make clips
     - name: Install
-      run: make -o clips install
+      run: sudo make -o clips install-clips && make install
     - name: Test
       run: >
         pip install pytest && pytest --import-mode append -v
