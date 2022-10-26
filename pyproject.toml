@@ -35,7 +35,8 @@ test-command = "pytest {project}/test"
 [tool.cibuildwheel.linux]
 before-all = [
     "yum install -y libffi-devel make unzip wget",
-    "make install-clips",
+    "([[ -d /host/clips_source ]] && cp /host/clips_source clips_source) || (make clips && cp clips_source /host/clips_source)",
+    "make -o clips install-clips",
 ]
 
 [[tool.cibuildwheel.overrides]]

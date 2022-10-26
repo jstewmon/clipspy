@@ -62,6 +62,13 @@ jobs:
         with:
           platforms: all
 
+      - name: Cache Clips
+        id: cache-clips
+        uses: actions/cache@v3
+        with:
+          path: /clips_source
+          key: ${{ matrix.platform.name }}-${{ matrix.platform.arch }}-${{ hashFiles('Makefile') }}
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.10.2
         env:
