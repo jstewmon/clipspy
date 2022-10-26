@@ -72,12 +72,13 @@ jobs:
         if: runner.os == 'Linux'
         uses: actions/cache@v3
         with:
-          path: /clips_source
+          path: clips_source
           key: ${{ matrix.name }}-${{ matrix.arch }}-${{ hashFiles('Makefile') }}
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.10.2
         env:
+          CIBW_ENVIRONMENT_PASS_LINUX: GITHUB_WORKSPACE
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
           CIBW_BUILD: '${{ matrix.py }}-${{ matrix.name }}_${{ matrix.arch }}'
