@@ -24,6 +24,8 @@ jobs:
     - name: Build Clips
       if: steps.cache.outputs.cache-hit != 'true'
       run: make clips
+    - name: Install Clips
+      run: sudo make install-clips
     - name: Test
       run: >
         pip install -U pip setuptools pytest &&
