@@ -1,6 +1,6 @@
 name: Build
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   validate:
@@ -9,42 +9,54 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: [ "3.7", "3.8", "3.9", "3.10", "3.11" ]
     steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Cache Clips
-      id: cache-clips
-      uses: actions/cache@v3
-      with:
-        path: clips_source
-        key: ${{ runner.os }}-${{ hashFiles('Makefile') }}
-    - name: Build Clips
-      if: steps.cache-clips.outputs.cache-hit != 'true'
-      run: make clips
-    - name: Install Clips
-      run: sudo make install-clips
-    - name: Test
-      run: >
-        pip install -U pip setuptools pytest &&
-        pip install -e . &&
-        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:clips_source pytest -v
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Cache Clips
+        id: cache-clips
+        uses: actions/cache@v3
+        with:
+          path: clips_source
+          key: ${{ runner.os }}-${{ hashFiles('Makefile') }}
+      - name: Build Clips
+        if: steps.cache-clips.outputs.cache-hit != 'true'
+        run: make clips
+      - name: Install Clips
+        run: sudo make install-clips
+      - name: Test
+        run: >
+          pip install -U pip setuptools pytest &&
+          pip install -e . &&
+          LD_LIBRARY_PATH=$LD_LIBRARY_PATH:clips_source pytest -v
 
   build_wheels:
     needs: validate
     # if: ${{ github.ref == 'refs/heads/master' }}
     name: Build Wheel
-    runs-on: ${{ matrix.platform.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        platform:
-        - { os: ubuntu-latest, name: manylinux, arch: x86_64 }
-        - { os: ubuntu-latest, name: manylinux, arch: aarch64 }
-        - { os: macos-latest, name: macosx, arch: universal2 }
-        py: [cp37, cp38, cp39, cp310, cp311]
+        os:
+          - ubuntu-latest
+          - macos-latest
+        py: [ cp37, cp38, cp39, cp310, cp311 ]
+        include:
+          - os: ubuntu-latest
+            name: manylinux
+            arch: x86_64
+          - os: ubuntu-latest
+            name: manylinux
+            arch: aarch64
+          - os: macos-latest
+            name: macosx
+            arch: universal2
+        exclude:
+          - os: macos-latest
+            py: cp37
 
     steps:
       - uses: actions/checkout@v3
@@ -61,14 +73,14 @@ jobs:
         uses: actions/cache@v3
         with:
           path: /clips_source
-          key: ${{ matrix.platform.name }}-${{ matrix.platform.arch }}-${{ hashFiles('Makefile') }}
+          key: ${{ matrix.name }}-${{ matrix.arch }}-${{ hashFiles('Makefile') }}
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.10.2
         env:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
-          CIBW_BUILD: '${{ matrix.py }}-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
+          CIBW_BUILD: '${{ matrix.py }}-${{ matrix.name }}_${{ matrix.arch }}'
           CIBW_SKIP: 'cp36-*'
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
