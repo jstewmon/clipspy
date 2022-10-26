@@ -22,7 +22,7 @@ jobs:
         path: clips_source
         key: ${{ runner.os }}-${{ hashFiles('Makefile') }}
     - name: Build Clips
-      if: steps.cache.outputs.cache-hit != 'true'
+      if: steps.cache-clips.outputs.cache-hit != 'true'
       run: make clips
     - name: Install Clips
       run: sudo make install-clips
