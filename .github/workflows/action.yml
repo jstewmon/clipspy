@@ -74,7 +74,7 @@ jobs:
         env:
           CIBW_ARCHS_LINUX: x86_64 aarch64
           CIBW_ARCHS_MACOS: universal2
-          CIBW_BUILD: 'cp*-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
+          CIBW_BUILD: 'cp310-${{ matrix.platform.name }}_${{ matrix.platform.arch }}'
           CIBW_SKIP: 'cp36-*'
           CIBW_TEST_SKIP: "*-macosx_arm64 *-macosx_universal2:arm64"
 
