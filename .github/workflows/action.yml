@@ -26,7 +26,7 @@ jobs:
       run: make clips
     - name: Test
       run: >
-        pip install pytest && make -o clips test
+        pip install -U pip setuptools pytest && make -o clips test
 
   build_wheels:
     needs: validate
