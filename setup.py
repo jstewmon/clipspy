@@ -28,7 +28,6 @@
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
-import fileinput
 from setuptools import find_packages, setup
 
 
@@ -36,24 +35,9 @@ CWD = os.path.dirname(__file__)
 
 setup(
     name="clipspy",
-    author="Matteo Cafasso",
-    author_email="noxdafox@gmail.com",
-    description=("CLIPS Python bindings"),
-    license="BSD",
-    long_description=open(os.path.join(CWD, 'README.rst')).read(),
     packages=find_packages(),
     ext_package="clips",
-    install_requires=["cffi>=1.0.0"],
     cffi_modules=["clips/clips_build.py:ffibuilder"],
     include_dirs=["/usr/include/clips", "/usr/local/include/clips"],
     data_files=[('lib', ['lib/clips.cdef'])],
-    keywords="clips python cffi expert-system",
-    url="https://github.com/noxdafox/clipspy",
-    classifiers=[
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: Implementation :: PyPy",
-        "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers",
-        "License :: OSI Approved :: BSD License"
-    ]
 )

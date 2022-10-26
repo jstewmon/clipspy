@@ -1,20 +1,32 @@
 [project]
 name = "clipspy"
+authors = [{ name = "Matteo Cafasso", email = "noxdafox@gmail.com" }]
 requires-python = ">=3.6"
+description = "CLIPS Python bindings"
+readme = "README.rst"
+license = { file = "LICENSE.txt" }
+keywords = ["clips", "python", "cffi", "expert system"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+]
+dependencies = ["cffi>=1.0.0"]
 dynamic = ["version"]
 
+[project.urls]
+Documentation = "https://clipspy.readthedocs.io/en/latest/"
+Source = "https://github.com/noxdafox/clipspy"
+
 [build-system]
-requires = [
-    "setuptools>=42",
-    "wheel",
-    "Cython",
-    "cffi>=1.0.0",
-]
+requires = ["setuptools>=42", "wheel", "Cython", "cffi>=1.0.0"]
 
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.dynamic]
-version = {attr = "clips.__version__"}
+version = { attr = "clips.__version__" }
 
 [tool.cibuildwheel]
 test-requires = "pytest"
@@ -28,12 +40,7 @@ before-all = [
 
 [[tool.cibuildwheel.overrides]]
 select = "*-musllinux*"
-before-all = [
-    "apk add libffi-dev make unzip wget",
-    "make install-clips",
-]
+before-all = ["apk add libffi-dev make unzip wget", "make install-clips"]
 
 [tool.cibuildwheel.macos]
-before-all = [
-    "make install-clips",
-]
+before-all = ["make install-clips"]
