@@ -28,7 +28,7 @@ jobs:
       run: >
         pip install -U pip setuptools pytest &&
         pip install -e . &&
-        pytest -v
+        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:clips_source pytest -v
 
   build_wheels:
     needs: validate
