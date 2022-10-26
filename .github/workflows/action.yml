@@ -57,6 +57,7 @@ jobs:
 
       - name: Cache Clips
         id: cache-clips
+        if: runner.os == 'Linux'
         uses: actions/cache@v3
         with:
           path: /clips_source
