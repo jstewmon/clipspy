@@ -21,7 +21,7 @@ clips: clips_source
 	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source clean
 	$(MAKE) -f $(MAKEFILE_NAME) -C clips_source \
 		CFLAGS="-std=c99 -O3 -fno-strict-aliasing -fPIC -arch x86_64 -arch arm64" \
-		LDFLAGS="-arch x86_64 -arch arm64"\
+		LDFLAGS="-arch x86_64 -arch arm64" \
 		libclips.a
 	$(CC) -o clips_source/libclips.so -arch x86_64 -arch arm64 -shared -lm clips_source/*.o
 else

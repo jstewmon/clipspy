@@ -34,8 +34,6 @@ from setuptools import find_packages, setup
 
 CWD = os.path.dirname(__file__)
 
-
-
 setup(
     name="clipspy",
     author="Matteo Cafasso",
